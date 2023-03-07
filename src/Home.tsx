@@ -78,7 +78,6 @@ export class Home extends Nullstack<HomeProps> {
 
   render({ worker }: ApplicationClientContext) {
     const loading = !!worker.queues.getUser?.length
-    const loadingPRs = !!worker.queues.getUserPRs?.length
 
     return (
       <section class="w-full min-h-screen">
@@ -133,26 +132,19 @@ export class Home extends Nullstack<HomeProps> {
               </ul>
 
               <ul>
-                {loadingPRs ? (
-                  <li>Loading</li>
+                {this.userPRs?.length > 0 ? (
+                  this.userPRs.map((pull) => (
+                    <li>
+                      <span>{pull.login} - </span>
+                      <a target="_blank" class="underline hover:text-blue-200" href={pull.url}>
+                        {pull.url}
+                      </a>
+                    </li>
+                  ))
                 ) : (
-                  <>
-                    {' '}
-                    {this.userPRs?.length > 0 ? (
-                      this.userPRs.map((pull) => (
-                        <li>
-                          <span>{pull.login} - </span>
-                          <a target="_blank" class="underline hover:text-blue-200" href={pull.url}>
-                            {pull.url}
-                          </a>
-                        </li>
-                      ))
-                    ) : (
-                      <li>
-                        <em>No PR found for this repository</em>
-                      </li>
-                    )}
-                  </>
+                  <li>
+                    <em>No PR found for this repository</em>
+                  </li>
                 )}
               </ul>
             </section>
